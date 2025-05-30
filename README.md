@@ -86,3 +86,11 @@ full-stack-learn/
 ## 🧠 Learning Journey
 
 This project is part of my journey to become a full-stack developer. I'm documenting my progress and the skills I learn along the way. Feel free to follow along!
+
+## 🚢 Deployment
+
+This application can be deployed to various platforms:
+- **Heroku** - Great for full-stack applications
+- **Netlify** - Excellent for frontend deployment
+- **Vercel** - Good option for Next.js applications
+- **Railway** - Simple deployment for full-stack apps
