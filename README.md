@@ -1,29 +1,88 @@
-# Full Stack Application
+# Full-Stack Learning Journey
 
-This is a basic full stack application built with:
-- Frontend: React
-- Backend: Node.js with Express
-- Database: MongoDB
+![Project Banner](./client/public/og-image.jpg)
 
-## Setup Instructions
+This project documents my journey learning full-stack web development. It's built with modern technologies and best practices to create a complete web application.
 
-1. Install MongoDB on your system
-2. Install Node.js if not already installed
-3. Run the following commands:
+## 🛠️ Tech Stack
+
+### Frontend
+- **React** - UI library for building component-based interfaces
+- **Context API** - For state management across components
+- **CSS3** - With modern features like CSS variables and flexbox
+- **Font Awesome** - For beautiful, scalable icons
+
+### Backend
+- **Node.js** - JavaScript runtime for server-side code
+- **Express** - Web framework for building APIs
+- **MongoDB** - NoSQL database for flexible data storage
+- **Mongoose** - ODM library for MongoDB and Node.js
+
+## ✨ Features
+
+- **Responsive Design** - Looks great on all devices
+- **Dark/Light Mode** - Toggle between themes with state persistence
+- **Modern UI Components** - Including a reusable Button component
+- **Learning Progress Tracker** - Visual representation of learning journey
+- **Resource Library** - Collection of helpful learning resources
+
+## 🚀 Setup Instructions
+
+### Prerequisites
+- Node.js (v14 or newer)
+- MongoDB (local or Atlas)
+- Git
+
+### Installation
+
+1. Clone the repository
    ```bash
-   # Install backend dependencies
+   git clone https://github.com/ayoub0030/Full-stack-experimant.git
+   cd Full-stack-experimant
+   ```
+
+2. Install backend dependencies
+   ```bash
    npm install
-   
-   # Create client directory and initialize React app
-   npx create-react-app client
+   ```
+
+3. Install frontend dependencies
+   ```bash
    cd client
-   npm install axios
+   npm install
    cd ..
    ```
 
-4. Start the development server:
+4. Create a .env file in the root directory with the following variables
+   ```
+   MONGODB_URI=your_mongodb_connection_string
+   PORT=5000
+   NODE_ENV=development
+   ```
+
+5. Start the development servers
    ```bash
    npm run dev
    ```
+   This will concurrently run both the backend server and React frontend.
 
-This will start both the backend server and the React development server concurrently.
+## 📁 Project Structure
+
+```
+full-stack-learn/
+├── client/                 # Frontend React application
+│   ├── public/             # Static files
+│   └── src/                # React source code
+│       ├── components/     # Reusable UI components
+│       ├── context/        # React Context providers
+│       └── App.js          # Main application component
+├── models/                 # Mongoose models
+├── routes/                 # Express API routes
+├── middleware/             # Custom middleware
+├── server.js              # Express server setup
+└── package.json           # Project dependencies and scripts
+```
+
+## 🧠 Learning Journey
+
+This project is part of my journey to become a full-stack developer. I'm documenting my progress and the skills I learn along the way. Feel free to follow along!
