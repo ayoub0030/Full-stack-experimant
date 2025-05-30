@@ -4,6 +4,7 @@ const cors = require('cors');
 const path = require('path');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
+const { errorHandler } = require('./middleware/errorHandler');
 
 // Load environment variables
 dotenv.config();
@@ -39,6 +40,9 @@ const connectDB = async () => {
 // Connect to database
 connectDB();
 
+// Import routes
+const progressRoutes = require('./routes/progress');
+
 // API Routes
 app.get('/api/health', (req, res) => {
   res.status(200).json({ 
@@ -57,10 +61,17 @@ app.get('/api', (req, res) => {
     documentation: '/api/docs',
     endpoints: [
       { path: '/api/health', method: 'GET', description: 'Check API health status' },
-      { path: '/api/progress', method: 'GET', description: 'Get learning progress' }
+      { path: '/api/progress', method: 'GET', description: 'Get all learning progress entries' },
+      { path: '/api/progress/:id', method: 'GET', description: 'Get a specific learning progress entry' },
+      { path: '/api/progress', method: 'POST', description: 'Create a new learning progress entry' },
+      { path: '/api/progress/:id', method: 'PUT', description: 'Update a learning progress entry' },
+      { path: '/api/progress/:id', method: 'DELETE', description: 'Delete a learning progress entry' }
     ]
   });
 });
+
+// Mount routes
+app.use('/api/progress', progressRoutes);
 
 // Serve static assets in production
 if (process.env.NODE_ENV === 'production') {
@@ -73,14 +84,8 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({
-    status: 'error',
-    message: process.env.NODE_ENV === 'production' ? 'Server error' : err.message
-  });
-});
+// Custom error handling middleware
+app.use(errorHandler);
 
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (err) => {
