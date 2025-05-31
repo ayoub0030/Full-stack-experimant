@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Progress = require('../models/Progress');
+const { validateProgressEntry } = require('../middleware/validator');
 
 /**
  * @route   GET /api/progress
@@ -57,7 +58,7 @@ router.get('/:id', async (req, res) => {
  * @desc    Create a new progress entry
  * @access  Public
  */
-router.post('/', async (req, res) => {
+router.post('/', validateProgressEntry, async (req, res) => {
   try {
     const progress = await Progress.create(req.body);
     
@@ -87,7 +88,7 @@ router.post('/', async (req, res) => {
  * @desc    Update a progress entry
  * @access  Public
  */
-router.put('/:id', async (req, res) => {
+router.put('/:id', validateProgressEntry, async (req, res) => {
   try {
     const progress = await Progress.findByIdAndUpdate(
       req.params.id,
