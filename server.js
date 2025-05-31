@@ -2,12 +2,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
-const dotenv = require('dotenv');
 const morgan = require('morgan');
 const { errorHandler } = require('./middleware/errorHandler');
-
-// Load environment variables
-dotenv.config();
+const config = require('./config');
 
 // Initialize Express app
 const app = express();
@@ -18,7 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Logger middleware
-if (process.env.NODE_ENV === 'development') {
+if (config.server.isDevelopment) {
   app.use(morgan('dev'));
   console.log('Morgan logger enabled in development mode');
 }
@@ -26,10 +23,7 @@ if (process.env.NODE_ENV === 'development') {
 // MongoDB Connection
 const connectDB = async () => {
   try {
-    const mongoConnection = await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/fullstack-learning', {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    });
+    const mongoConnection = await mongoose.connect(config.db.uri, config.db.options);
     console.log(`MongoDB Connected: ${mongoConnection.connection.host}`);
   } catch (error) {
     console.error(`Error connecting to MongoDB: ${error.message}`);
@@ -74,7 +68,7 @@ app.get('/api', (req, res) => {
 app.use('/api/progress', progressRoutes);
 
 // Serve static assets in production
-if (process.env.NODE_ENV === 'production') {
+if (config.server.isProduction) {
   // Set static folder
   app.use(express.static('client/build'));
 
@@ -95,9 +89,9 @@ process.on('unhandledRejection', (err) => {
 });
 
 // Start server
-const PORT = process.env.PORT || 5000;
+const PORT = config.server.port;
 const server = app.listen(PORT, () => {
-  console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
+  console.log(`Server running in ${config.server.nodeEnv} mode on port ${PORT}`);
 });
 
 // Handle server errors
