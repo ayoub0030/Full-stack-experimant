@@ -5,6 +5,7 @@ const path = require('path');
 const morgan = require('morgan');
 const { errorHandler } = require('./middleware/errorHandler');
 const config = require('./config');
+const logger = require('./utils/logger');
 
 // Initialize Express app
 const app = express();
@@ -17,16 +18,16 @@ app.use(express.urlencoded({ extended: false }));
 // Logger middleware
 if (config.server.isDevelopment) {
   app.use(morgan('dev'));
-  console.log('Morgan logger enabled in development mode');
+  logger.info('Morgan logger enabled in development mode');
 }
 
 // MongoDB Connection
 const connectDB = async () => {
   try {
     const mongoConnection = await mongoose.connect(config.db.uri, config.db.options);
-    console.log(`MongoDB Connected: ${mongoConnection.connection.host}`);
+    logger.info(`MongoDB Connected: ${mongoConnection.connection.host}`);
   } catch (error) {
-    console.error(`Error connecting to MongoDB: ${error.message}`);
+    logger.error('Error connecting to MongoDB', error);
     process.exit(1); // Exit with failure code
   }
 };
@@ -83,19 +84,18 @@ app.use(errorHandler);
 
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (err) => {
-  console.log('UNHANDLED REJECTION! 💥 Shutting down...');
-  console.error(err.name, err.message);
+  logger.error('UNHANDLED REJECTION! 💥 Shutting down...', err);
   process.exit(1);
 });
 
 // Start server
 const PORT = config.server.port;
 const server = app.listen(PORT, () => {
-  console.log(`Server running in ${config.server.nodeEnv} mode on port ${PORT}`);
+  logger.info(`Server running in ${config.server.nodeEnv} mode on port ${PORT}`);
 });
 
 // Handle server errors
 server.on('error', (error) => {
-  console.error(`Server error: ${error.message}`);
+  logger.error('Server error', error);
   process.exit(1);
 });
